@@ -25,19 +25,31 @@ func PushNotificationService(Body string, Title string) {
 	if err != nil {
 		fmt.Printf("Error in initializing firebase app: %s", err)
 	}
+	tokens, err := GetTokensForUserNotification()
 
-	response, err := fcmClient.Send(context.Background(), &messaging.Message{
+	fmt.Println("tokens", len(tokens))
+
+	if err != nil {
+		fmt.Printf("Error in getting tokens: %s", err)
+	}
+	response, err := fcmClient.SendMulticast(context.Background(), &messaging.MulticastMessage{
 
 		Notification: &messaging.Notification{
 			Title: Title,
 			Body:  Body,
 		},
-		Token: "d6kB-iqjR2upwy4La-OZfs:APA91bFUy_1hCNZXXZm2WhyvJbQb0V47GksjPgc_8C7L8dk9E9e1N2J-6mrKxHsJ9dE8WQxUy5PkCMiOQTFGQq8Vb09qPS86x7G6lbWSFW1Mfr5jUpf-kV_5WUVBNYtW6TUYQv_omEgG", // it's a single device token
+
+		Tokens: tokens,
 	})
 
 	if err != nil {
 		fmt.Printf("Error in initializing firebase app: %s", err)
 	}
 
-	fmt.Println(response)
+	for index, resposne := range response.Responses {
+		if resposne.Error != nil {
+			fmt.Println(index, resposne.Error)
+		}
+	}
+
 }

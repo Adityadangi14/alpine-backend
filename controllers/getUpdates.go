@@ -18,7 +18,7 @@ func PushUpdates() {
 	var tableData model.Table
 
 	go func() {
-		ticker := time.NewTicker(3 * time.Minute)
+		ticker := time.NewTicker(1 * time.Minute)
 		defer ticker.Stop()
 
 		for range ticker.C {
@@ -51,7 +51,7 @@ func getDataFromApi() ([]model.Table, error) {
 	params := url.Values{
 		"pageno":      {"1"},
 		"strCat":      {"Company Update"},
-		"strPrevDate": {getCurrentDateYYYYMMDD()},
+		"strPrevDate": {"20240716"},
 		"strScrip":    {""},
 		"strSearch":   {"P"},
 		"strToDate":   {getCurrentDateYYYYMMDD()},

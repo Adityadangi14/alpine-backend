@@ -5,6 +5,7 @@ import (
 	"os"
 	initializers "project_mine/initlizers"
 	"project_mine/model"
+	"project_mine/service"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -76,13 +77,13 @@ func createTokenFromId(id string) (string, error) {
 	return tokenString, nil
 
 }
+
 func createNewUser(body UserBody) (map[string]any, error) {
 	user := model.UserModel{
 		UserName:       body.UserName,
 		Email:          body.Email,
 		ProfilePicture: body.ProfilePicture,
 		AuthType:       body.AuthType,
-		FcmToken:       body.FcmToken,
 		PID:            body.PID,
 	}
 
@@ -97,6 +98,8 @@ func createNewUser(body UserBody) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	service.HandleTokenForUser(user.ID, body.FcmToken)
 
 	return map[string]any{"token": tokenString, "success": true}, nil
 }
@@ -114,6 +117,7 @@ func handleExistingUser(body UserBody) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
+	service.HandleTokenForUser(user.ID, body.FcmToken)
 
 	return map[string]any{"token": tokenString, "success": true}, nil
 }

@@ -16,7 +16,6 @@ type UserModel struct {
 	PID            string `gorm:"<-:create"`
 	ProfilePicture string
 	AuthType       string `gorm:"<-:create"`
-	FcmToken       string
 }
 
 func (u *UserModel) BeforeCreate(tx *gorm.DB) (err error) {
