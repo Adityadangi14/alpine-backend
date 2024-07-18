@@ -39,6 +39,7 @@ func PushUpdates() {
 					initializers.DB.Create(&table)
 					service.PushNotificationService(table.SLONGNAME+"/ "+table.CATEGORYNAME, table.HEADLINE)
 				}
+
 			}
 
 		}
@@ -51,7 +52,7 @@ func getDataFromApi() ([]model.Table, error) {
 	params := url.Values{
 		"pageno":      {"1"},
 		"strCat":      {"Company Update"},
-		"strPrevDate": {"20240716"},
+		"strPrevDate": {getCurrentDateYYYYMMDD()},
 		"strScrip":    {""},
 		"strSearch":   {"P"},
 		"strToDate":   {getCurrentDateYYYYMMDD()},

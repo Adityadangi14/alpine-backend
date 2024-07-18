@@ -46,9 +46,11 @@ func PushNotificationService(Body string, Title string) {
 		fmt.Printf("Error in initializing firebase app: %s", err)
 	}
 
-	for index, resposne := range response.Responses {
-		if resposne.Error != nil {
-			fmt.Println(index, resposne.Error)
+	for index, res := range response.Responses {
+		if res.Error != nil {
+			fmt.Println(index, res.Error)
+			tkn := tokens[index]
+			DeleteNotficationToken(tkn)
 		}
 	}
 
