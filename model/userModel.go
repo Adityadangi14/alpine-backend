@@ -1,6 +1,7 @@
 package model
 
 import (
+	loghandler "project_mine/logHandler"
 	"strings"
 
 	"github.com/gofrs/uuid"
@@ -23,6 +24,7 @@ func (u *UserModel) BeforeCreate(tx *gorm.DB) (err error) {
 	uuid, err := uuid.NewV4()
 
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		return err
 	}
 

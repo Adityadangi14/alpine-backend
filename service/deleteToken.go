@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	initializers "project_mine/initlizers"
+	loghandler "project_mine/logHandler"
 	"project_mine/model"
 	"slices"
 
@@ -26,6 +27,7 @@ func DeleteNotficationToken(token string) {
 	err := initializers.DB.Save(&notficationPoolItem).Error
 
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		fmt.Printf("error %s", err)
 	}
 }

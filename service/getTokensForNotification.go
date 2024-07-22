@@ -2,6 +2,7 @@ package service
 
 import (
 	initializers "project_mine/initlizers"
+	loghandler "project_mine/logHandler"
 	"project_mine/model"
 )
 
@@ -13,6 +14,7 @@ func GetTokensForUserNotification() ([]string, error) {
 	err := initializers.DB.Find(&notficationPoolItems).Error
 
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		return nil, err
 	}
 

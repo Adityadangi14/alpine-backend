@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	loghandler "project_mine/logHandler"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,6 +57,10 @@ func GetStockUrl(c *gin.Context) {
 			"success": false,
 			"message": "unbable to get Url ",
 		})
+
+		loghandler.AppLogger.Error(string(err.Error()))
+
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	initializers "project_mine/initlizers"
+	loghandler "project_mine/logHandler"
 	"project_mine/model"
 	"project_mine/service"
 	"time"
@@ -27,6 +28,7 @@ func AuthHandler(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"error": "Invalid request body format",
 		})
+		loghandler.AppLogger.Error(string(err.Error()))
 		return
 	}
 	var user model.UserModel
@@ -40,6 +42,7 @@ func AuthHandler(c *gin.Context) {
 				"success": false,
 				"message": "unable to Authenticate",
 			})
+			loghandler.AppLogger.Error(string(err.Error()))
 			return
 		}
 
@@ -53,6 +56,7 @@ func AuthHandler(c *gin.Context) {
 				"success": false,
 				"message": "unable to Authenticate",
 			})
+			loghandler.AppLogger.Error(string(err.Error()))
 			return
 		}
 
@@ -71,6 +75,7 @@ func createTokenFromId(id string) (string, error) {
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
 
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		return "", err
 	}
 
@@ -96,6 +101,7 @@ func createNewUser(body UserBody) (map[string]any, error) {
 	tokenString, err := createTokenFromId(user.ID)
 
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		return nil, err
 	}
 
@@ -115,6 +121,7 @@ func handleExistingUser(body UserBody) (map[string]any, error) {
 	tokenString, err := createTokenFromId(user.ID)
 
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		return nil, err
 	}
 	service.HandleTokenForUser(user.ID, body.FcmToken)

@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	initializers "project_mine/initlizers"
+	loghandler "project_mine/logHandler"
 	"project_mine/model"
 	"project_mine/service"
 	"time"
@@ -27,7 +28,7 @@ func PushUpdates() {
 			var wg sync.WaitGroup
 
 			if err != nil {
-				fmt.Println(err)
+				loghandler.AppLogger.Error(string(err.Error()))
 			}
 
 			for _, table := range data {
@@ -65,6 +66,7 @@ func getDataFromApi() ([]model.Table, error) {
 	fmt.Println(url)
 
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		return []model.Table{}, err
 	}
 
@@ -86,7 +88,7 @@ func getDataFromApi() ([]model.Table, error) {
 	content, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-
+		loghandler.AppLogger.Error(string(err.Error()))
 		return []model.Table{}, err
 	}
 

@@ -2,6 +2,7 @@ package service
 
 import (
 	initializers "project_mine/initlizers"
+	loghandler "project_mine/logHandler"
 	"project_mine/model"
 )
 
@@ -15,6 +16,7 @@ func HandleTokenForUser(userId string, token string) (bool, error) {
 		err := initializers.DB.Create(&notficationPoolItem).Error
 
 		if err != nil {
+			loghandler.AppLogger.Error(string(err.Error()))
 			return false, err
 		}
 
@@ -26,11 +28,10 @@ func HandleTokenForUser(userId string, token string) (bool, error) {
 		err := initializers.DB.Save(&notficationPoolItem).Error
 
 		if err != nil {
+			loghandler.AppLogger.Error(string(err.Error()))
 			return false, err
 		}
 
 		return true, nil
-
 	}
-
 }

@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"fmt"
 	initializers "project_mine/initlizers"
+	loghandler "project_mine/logHandler"
 	"project_mine/model"
 
 	"log"
@@ -16,14 +16,6 @@ import (
 )
 
 func RequiredAuth(c *gin.Context) {
-
-	defer func() {
-		if err := recover(); err != nil {
-			// Handle the panic gracefully (e.g., log the error, return an error response)
-			c.AbortWithError(http.StatusBadRequest, err.(error))
-			fmt.Println("Error in middleware:", err) // Log for debugging
-		}
-	}()
 
 	tokenString := c.GetHeader("Token")
 
@@ -44,6 +36,7 @@ func RequiredAuth(c *gin.Context) {
 				"success": false,
 				"message": "Auth Failed ()",
 			})
+
 			return "", nil
 		}
 
@@ -51,6 +44,7 @@ func RequiredAuth(c *gin.Context) {
 		return []byte(os.Getenv("SECRET")), nil
 	})
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		log.Fatal(err)
 	}
 

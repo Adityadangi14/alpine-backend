@@ -3,6 +3,7 @@ package initializers
 import (
 	"log"
 	"os"
+	loghandler "project_mine/logHandler"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -22,6 +23,7 @@ func ConnectToDb() {
 	})
 
 	if err != nil {
+		loghandler.AppLogger.Error(string(err.Error()))
 		panic("Unable to connect to DB")
 	}
 
