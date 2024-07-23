@@ -14,7 +14,7 @@ type UserModel struct {
 	ID             string `gorm:"primary_ key"`
 	UserName       string
 	Email          string
-	PID            string `gorm:"<-:create"`
+	PID            string `gorm:"unique"`
 	ProfilePicture string
 	AuthType       string `gorm:"<-:create"`
 }

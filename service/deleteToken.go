@@ -13,22 +13,24 @@ import (
 func DeleteNotficationToken(token string) {
 	var w = []string{token}
 
-	var notficationPoolItem model.NotficationPool
+	var notficationPoolItem []model.NotficationPool
 
-	initializers.DB.Where("token_array @> ?", pq.StringArray(w)).Find(&notficationPoolItem)
-
-	modifiedArray := deleteFromSliceByIndex(notficationPoolItem.TokenArray, slices.Index(notficationPoolItem.TokenArray, token))
-
-	notficationPoolItem = model.NotficationPool{
-		UserId:     notficationPoolItem.UserId,
-		TokenArray: modifiedArray,
-	}
-
-	err := initializers.DB.Save(&notficationPoolItem).Error
-
+	err := initializers.DB.Where("token_array @> ?", pq.StringArray(w)).Find(&notficationPoolItem).Error
 	if err != nil {
-		loghandler.AppLogger.Error(string(err.Error()))
-		fmt.Printf("error %s", err)
+		loghandler.AppLogger.Error(err.Error())
+	}
+	fmt.Println(notficationPoolItem)
+
+	for _, noti := range notficationPoolItem {
+		noti = model.NotficationPool{
+			UserId:     noti.UserId,
+			TokenArray: deleteFromSliceByIndex(noti.TokenArray, slices.Index(noti.TokenArray, token)),
+		}
+
+		err := initializers.DB.Model(model.NotficationPool{}).Where("user_id = ?", noti.UserId).Updates(model.NotficationPool{UserId: noti.UserId, TokenArray: noti.TokenArray}).Error
+		if err != nil {
+			loghandler.AppLogger.Error(err.Error())
+		}
 	}
 }
 

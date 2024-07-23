@@ -8,7 +8,7 @@ import (
 type NotficationPool struct {
 	gorm.Model
 
-	UserId string
+	UserId string `gorm:"unique"`
 
 	TokenArray pq.StringArray `gorm:"type:text[]"`
 }

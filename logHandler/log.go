@@ -19,7 +19,9 @@ func OpenLogFile() {
 }
 
 func Log() {
-	jsonHandler := slog.NewJSONHandler(LogFile, &slog.HandlerOptions{})
+	jsonHandler := slog.NewJSONHandler(LogFile, &slog.HandlerOptions{
+		AddSource: true,
+	})
 
 	AppLogger = slog.New(jsonHandler)
 

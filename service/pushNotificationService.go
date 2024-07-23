@@ -54,8 +54,8 @@ func PushNotificationService(Body string, Title string) {
 		if res.Error != nil {
 			loghandler.AppLogger.Error(string(res.Error.Error()))
 			fmt.Println(index, res.Error)
-			tkn := tokens[index]
-			DeleteNotficationToken(tkn)
+			//	tkn := tokens[index]
+			//DeleteNotficationToken()
 		}
 	}
 
