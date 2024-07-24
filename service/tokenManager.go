@@ -1,9 +1,11 @@
 package service
 
 import (
+	"fmt"
 	initializers "project_mine/initlizers"
 	loghandler "project_mine/logHandler"
 	"project_mine/model"
+	"slices"
 )
 
 func HandleTokenForUser(userId string, token string) (bool, error) {
@@ -22,6 +24,10 @@ func HandleTokenForUser(userId string, token string) (bool, error) {
 
 		return true, nil
 	} else {
+
+		if slices.Contains(notficationPoolItem.TokenArray, token) {
+			return false, fmt.Errorf("token alredy present")
+		}
 
 		notficationPoolItem.TokenArray = append(notficationPoolItem.TokenArray, token)
 
