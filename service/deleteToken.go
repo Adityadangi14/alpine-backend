@@ -38,5 +38,17 @@ func deleteFromSliceByIndex(arr []string, index int) []string {
 	if index < 0 || index >= len(arr) {
 		return nil // Handle invalid index (optional)
 	}
-	return append(arr[:index], arr[index+1:]...)
+	return removeDuplicates(append(arr[:index], arr[index+1:]...))
+}
+
+func removeDuplicates(slice []string) []string {
+	unique := make(map[string]bool)
+	result := []string{}
+	for _, v := range slice {
+		if _, ok := unique[v]; !ok {
+			unique[v] = true
+			result = append(result, v)
+		}
+	}
+	return result
 }
