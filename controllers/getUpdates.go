@@ -102,6 +102,8 @@ func getDataFromApi() ([]model.Table, error) {
 
 	er := json.Unmarshal(content, &data)
 
+	loghandler.AppLogger.Info(fmt.Sprint(data.Table))
+
 	if er != nil {
 		return []model.Table{}, er
 	}
