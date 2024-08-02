@@ -22,6 +22,7 @@ func main() {
 
 	r.GET("/getTableList", middleware.RequiredAuth, controllers.GetUpdateListController)
 	r.POST("/getStockUrl", middleware.RequiredAuth, controllers.GetStockUrl)
+	r.GET("/getLogfile", controllers.GetLogFile)
 	r.POST("/auth", controllers.AuthHandler)
 
 	err := r.Run(":3000")
